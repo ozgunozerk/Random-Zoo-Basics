@@ -1,0 +1,9 @@
+[package]
+name = "assessment"
+version = "0.1.0"
+authors = ["Ozgun Ozerk <ozgunozerk@sabanciuniv.edu"]
+edition = "2018"
+
+[dependencies]
+mod_exp = "1.0.1"
+primes = "0.3.0"
