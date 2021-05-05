@@ -1,14 +1,18 @@
-#[doc(inline)]
 use mod_exp::mod_exp;
 use primes::is_prime;
 
-/// finds the largest prime, which is smaller than the given input `n`
+/// finds the largest prime, and has `l` bits
 /// uses prime::is_prime
+/// also checks that if p+1 % 4 != 0, so that it will be a "hard" prime
 
-fn find_largest_prime(n: usize) -> usize {
-    for trial in (0..n).rev() {
-        if is_prime(trial as u64) {
-            return trial;
+fn find_largest_prime(l: usize) -> usize {
+    let n = usize::pow(2, l as u32); // n = 2^l
+    for trial in (1..n).step_by(2).rev() {
+        if trial % 4 != 3 {
+            // ensures p will be a "hard" prime
+            if is_prime(trial as u64) {
+                return trial;
+            }
         }
     }
     return 0;
@@ -17,7 +21,8 @@ fn find_largest_prime(n: usize) -> usize {
 /// computes [Legendre Symbol](https://en.wikipedia.org/wiki/Legendre_symbol).
 /// This is necessary for the modular square root computation.
 /// Inputs: `p` is a prime, `a` is relatively prime to `p` (if `p` divides `a`, then `a|p = 0`)
-/// Returns 1 if a has a square root modulo `p`, 0 otherwise.
+/// Returns 1 if a has a square root modulo `p`, -1 otherwise.
+/// But since we are working with unsigned integers, it returns 0 instead of 1
 
 fn legendre_symbol(a: usize, p: usize) -> usize {
     let ls = mod_exp(a, (p - 1) / 2, p);
@@ -28,26 +33,27 @@ fn legendre_symbol(a: usize, p: usize) -> usize {
     }
 }
 
-/// Find a quadratic residue (mod p) of `a`. 
+/// The Tonelli-Shanks algorithm for finding a quadratic residue (mod p) of `a`.
 /// `p` must be an odd prime.
 /// Solve the congruence of the form:
 /// `x^2 = a (mod p)`
 /// And returns x. Note that `p - x` is also a root.
 /// 0 is returned is no square root exists for these `a` and `p`.
-/// The Tonelli-Shanks algorithm is used (except
-/// for some simple cases in which the solution
-/// is known from an identity). This algorithm runs in polynomial time 
+/// This algorithm runs in polynomial time
 /// (unless the generalized Riemann hypothesis is false).
-/// [Reference link](https://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python) 
+/// [Reference link](https://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python)
 
 fn square_root(a: usize, p: usize) -> usize {
     if legendre_symbol(a, p) != 1 {
         return 0;
     } else if a == 0 {
+        // probably unnecessary for our case
         return 0;
     } else if p == 2 {
+        // probably unnecessary for our case
         return 0;
     } else if (p + 1) % 4 == 0 {
+        // probably unnecessary for our case
         return mod_exp(a, (p + 1) / 4, p);
     } else {
         let mut s = p - 1;
