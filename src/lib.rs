@@ -43,7 +43,7 @@ fn legendre_symbol(a: usize, p: usize) -> usize {
 /// (unless the generalized Riemann hypothesis is false).
 /// [Reference link](https://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python)
 
-fn square_root(a: usize, p: usize) -> (usize, usize) {
+pub fn square_root(a: usize, p: usize) -> (usize, usize) {
     if legendre_symbol(a, p) != 1 {
         return (0, 0);
     } else if a == 0 {
@@ -99,11 +99,11 @@ fn square_root(a: usize, p: usize) -> (usize, usize) {
 
 /// computes the square of an input `a` in modulo `p`
 
-fn square(a: usize, p: usize) -> usize {
+pub fn square(a: usize, p: usize) -> usize {
     return mod_exp(a, 2, p);
 }
 
-fn main() {
+pub fn demo() {
     let modulus = 14;
 
     let prime = find_largest_prime(modulus);

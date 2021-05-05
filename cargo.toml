@@ -7,3 +7,11 @@ edition = "2018"
 [dependencies]
 mod_exp = "1.0.1"
 primes = "0.3.0"
+
+[lib]
+name = "hardprime"
+path = "src/lib.rs"
+
+[[bin]]
+name = "executor"
+path = "src/bin.rs"
