@@ -2,21 +2,34 @@ use mod_exp::mod_exp;
 use primes::is_prime;
 
 /// finds the largest prime that has `l` bits
+/// and returns both the prime and it's exponent
+/// prime should be in format `p-1 = 2^s * t`
+/// exponent = "s" in the above equation
 /// uses prime::is_prime
 /// also checks that if p+1 % 4 != 0, so that it will be a "hard" prime
 
-#[inline]  // since this will be included in benchmark test
-pub fn find_largest_prime(l: usize) -> usize {
+#[inline] // since this will be included in benchmark test
+pub fn find_largest_prime(l: usize) -> (usize, usize) {
     let n = usize::pow(2, l as u32); // n = 2^l
+    let mut prime = 0;
     for trial in (1..n).step_by(2).rev() {
         if trial % 4 != 3 {
             // ensures p will be a "hard" prime
             if is_prime(trial as u64) {
-                return trial;
+                prime = trial;
+                break;
             }
         }
     }
-    return 0;
+
+    let mut temp_prime = prime - 1; // p-1 = 2^s * t
+    let mut exponent = 0; // counter to hold exponent
+    while temp_prime % 2 == 0 {
+        temp_prime /= 2;
+        exponent += 1;
+    }
+
+    return (prime, exponent);
 }
 
 /// computes [Legendre Symbol](https://en.wikipedia.org/wiki/Legendre_symbol).
@@ -44,7 +57,7 @@ fn legendre_symbol(a: usize, p: usize) -> usize {
 /// (unless the generalized Riemann hypothesis is false).
 /// [Reference link](https://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python)
 
-#[inline]  // since this will be included in benchmark test
+#[inline] // since this will be included in benchmark test
 pub fn square_root(a: usize, p: usize) -> (usize, usize) {
     if legendre_symbol(a, p) != 1 {
         return (0, 0);
@@ -62,7 +75,8 @@ pub fn square_root(a: usize, p: usize) -> (usize, usize) {
     } else {
         let mut s = p - 1;
         let mut e = 0;
-
+        // we already have computed the e in find_largest_prime
+        // if we supply that in here, the below while loop would be unnecessary
         while (s % 2) == 0 {
             s /= 2;
             e += 1;
@@ -101,7 +115,7 @@ pub fn square_root(a: usize, p: usize) -> (usize, usize) {
 
 /// computes the square of an input `a` in modulo `p`
 
-#[inline]  // since this will be included in benchmark test
+#[inline] // since this will be included in benchmark test
 pub fn square(a: usize, p: usize) -> usize {
     return mod_exp(a, 2, p);
 }
@@ -110,25 +124,25 @@ pub fn demo() {
     let modulus = 14;
 
     let prime = find_largest_prime(modulus);
-    match prime {
+    match prime.0 {
         0 => println!(
             "Fail! Prime could not be found for any number smaller than {}",
             modulus
         ),
         _ => {
             let plain_text = 12;
-            let sqrt = square_root(plain_text, prime);
-            let square = square(sqrt.0, prime);
+            let sqrt = square_root(plain_text, prime.0);
+            let square = square(sqrt.0, prime.0);
 
             if square == plain_text {
                 println!(
                     "Success! \n\tSquare root of 12 modulo {} is: {}, \n\tsquare of {} modulo {} is: {}",
-                    prime, sqrt.0, sqrt.0, prime, square
+                    prime.0, sqrt.0, sqrt.0, prime.0, square
                 );
             } else {
                 println!(
                     "Fail! \n\tSquare root of 12 modulo {} is: {}, \n\tsquare of {} modulo {} is: {}",
-                    prime, sqrt.0, sqrt.0, prime, square
+                    prime.0, sqrt.0, sqrt.0, prime.0, square
                 );
             }
         }
@@ -174,8 +188,8 @@ mod test {
 
     #[test]
     fn find_largest_prime_test() {
-        assert_eq!(241, find_largest_prime(8)); // the largest prime that has 8 bits, is 241
-        assert_eq!(113, find_largest_prime(7)); // the largest prime that has 7 bits, is 113
-        assert_eq!(61, find_largest_prime(6)); // the largest prime that has 6 bits, is 61
+        assert_eq!(241, find_largest_prime(8).0); // the largest prime that has 8 bits, is 241
+        assert_eq!(113, find_largest_prime(7).0); // the largest prime that has 7 bits, is 113
+        assert_eq!(61, find_largest_prime(6).0); // the largest prime that has 6 bits, is 61
     }
 }
