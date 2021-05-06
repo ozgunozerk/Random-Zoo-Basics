@@ -27,11 +27,31 @@ P.S. you have to have *rust* and *cargo* installed in your system
 
 ------- 
 
-### Documentation
+### How to see the Documentation
 
 1. Download the repo
 2. move to this repo's root directory in your favourite terminal
 3. run the command `cargo doc --open`
+4. This command will open a browser, and in there, all the documentation will be provided with a user-friendly interface
 
-This command will open a browser, and in there, all the documentation will be provided :) Thanks to RUST
 
+------- 
+
+### How to do the Testing (both Unit and Integration tests)
+
+1. Download the repo
+2. move to this repo's root directory in your favourite terminal
+3. run the command `cargo test`
+4. you can see the results in the terminal
+
+
+------- 
+
+### How to do the Benchmark Tests
+
+1. Download the repo
+2. move to this repo's root directory in your favourite terminal
+3. run the command `cargo bench`
+4. Go to this path inside this repo `target/criterion/report`
+5. open the `index.html` in your favourite browser
+6. you can see the benchmark results in your browser, with a nice user-friendly interface
