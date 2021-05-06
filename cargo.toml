@@ -15,3 +15,10 @@ path = "src/lib.rs"
 [[bin]]
 name = "executor"
 path = "src/bin.rs"
+
+[dev-dependencies]
+criterion = "0.3"
+
+[[bench]]
+name = "benchmark"
+harness = false

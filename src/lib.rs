@@ -5,7 +5,8 @@ use primes::is_prime;
 /// uses prime::is_prime
 /// also checks that if p+1 % 4 != 0, so that it will be a "hard" prime
 
-fn find_largest_prime(l: usize) -> usize {
+#[inline]  // since this will be included in benchmark test
+pub fn find_largest_prime(l: usize) -> usize {
     let n = usize::pow(2, l as u32); // n = 2^l
     for trial in (1..n).step_by(2).rev() {
         if trial % 4 != 3 {
@@ -43,6 +44,7 @@ fn legendre_symbol(a: usize, p: usize) -> usize {
 /// (unless the generalized Riemann hypothesis is false).
 /// [Reference link](https://eli.thegreenplace.net/2009/03/07/computing-modular-square-roots-in-python)
 
+#[inline]  // since this will be included in benchmark test
 pub fn square_root(a: usize, p: usize) -> (usize, usize) {
     if legendre_symbol(a, p) != 1 {
         return (0, 0);
@@ -86,7 +88,7 @@ pub fn square_root(a: usize, p: usize) -> (usize, usize) {
                 }
             }
             if m == 0 {
-                return (x, p-x);
+                return (x, p - x);
             }
             let gs = mod_exp(g, usize::pow(2, r - m - 1), p);
             g = (gs * gs) % p;
@@ -99,6 +101,7 @@ pub fn square_root(a: usize, p: usize) -> (usize, usize) {
 
 /// computes the square of an input `a` in modulo `p`
 
+#[inline]  // since this will be included in benchmark test
 pub fn square(a: usize, p: usize) -> usize {
     return mod_exp(a, 2, p);
 }
@@ -132,31 +135,31 @@ pub fn demo() {
     }
 }
 
-
 #[cfg(test)]
 mod test {
     use super::*;
 
     #[test]
     fn square_test() {
-        assert_eq!(9, square(3,13));  // 3**2 = 9 mod 13
-        assert_eq!(4, square(2,13));  // 2**2 = 4 mod 13
-        assert_eq!(12, square(5,13));  // 5**2 = 12 mod 13
+        assert_eq!(9, square(3, 13)); // 3**2 = 9 mod 13
+        assert_eq!(4, square(2, 13)); // 2**2 = 4 mod 13
+        assert_eq!(12, square(5, 13)); // 5**2 = 12 mod 13
     }
 
     #[test]
-    fn square_root_test() {  // this is a bit longer, since we need to check for two combinations in each scenario
-        let mut res = square_root(9, 13);  // 3**2 = 9 mod 13, also 10 is a root
+    fn square_root_test() {
+        // this is a bit longer, since we need to check for two combinations in each scenario
+        let mut res = square_root(9, 13); // 3**2 = 9 mod 13, also 10 is a root
         if res != (3, 10) && res != (10, 3) {
             panic!("Should have been equal to at least one of them");
         }
 
-        res = square_root(4, 13);  // 2**2 = 4 mod 13, also 11 is a root
+        res = square_root(4, 13); // 2**2 = 4 mod 13, also 11 is a root
         if res != (2, 11) && res != (11, 2) {
             panic!("Should have been equal to at least one of them");
         }
 
-        res = square_root(12, 13);  // 5**2 = 12 mod 13, also 8 is a root
+        res = square_root(12, 13); // 5**2 = 12 mod 13, also 8 is a root
         if res != (5, 8) && res != (8, 5) {
             panic!("Should have been equal to at least one of them");
         }
@@ -164,16 +167,15 @@ mod test {
 
     #[test]
     fn legendre_symbol_test() {
-        assert_eq!(1, legendre_symbol(9, 13));  // 3**2 = 9 mod 13
-        assert_eq!(1, legendre_symbol(4, 13));  // 2**2 = 4 mod 13
-        assert_eq!(1, legendre_symbol(12, 13));  // 5**2 = 12 mod 13
+        assert_eq!(1, legendre_symbol(9, 13)); // 3**2 = 9 mod 13
+        assert_eq!(1, legendre_symbol(4, 13)); // 2**2 = 4 mod 13
+        assert_eq!(1, legendre_symbol(12, 13)); // 5**2 = 12 mod 13
     }
 
     #[test]
     fn find_largest_prime_test() {
-        assert_eq!(241, find_largest_prime(8));  // the largest prime that has 8 bits, is 241
-        assert_eq!(113, find_largest_prime(7));  // the largest prime that has 7 bits, is 113
-        assert_eq!(61, find_largest_prime(6));  // the largest prime that has 6 bits, is 61
+        assert_eq!(241, find_largest_prime(8)); // the largest prime that has 8 bits, is 241
+        assert_eq!(113, find_largest_prime(7)); // the largest prime that has 7 bits, is 113
+        assert_eq!(61, find_largest_prime(6)); // the largest prime that has 6 bits, is 61
     }
-
 }
