@@ -1,5 +1,4 @@
 use hardprime::demo;
-use hardprime::find_largest_prime;
 
 // 16-bit prime -> 65521
 // 32-bit prime -> 4294967197
@@ -9,6 +8,4 @@ use hardprime::find_largest_prime;
 
 pub fn main() {
     demo();
-    println!("{}", find_largest_prime(40).0);
-    println!("{}", find_largest_prime(56).0);
 }
