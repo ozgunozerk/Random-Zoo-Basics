@@ -3,7 +3,9 @@ use hardprime::{find_largest_prime, square, square_root};
 
 // 16-bit prime -> 65521
 // 32-bit prime -> 4294967197
+// 40-bit prime -> 1099511627689
 // 48-bit prime -> 281474976710597
+// 56-bit prime -> 72057594037927909
 
 // let our small number be 51, so that 51^2 will never be more than the primes
 // and we will compare p-51 with 51 as inputs for square function to see if there is any difference in performance
@@ -11,7 +13,14 @@ use hardprime::{find_largest_prime, square, square_root};
 pub fn bench_square_fit(c: &mut Criterion) {
     let mut group = c.benchmark_group("square_fit");
 
-    for prime in [65521, 4294967197, 281474976710597].iter() {
+    for prime in [
+        4294967197,
+        1099511627689,
+        281474976710597,
+        72057594037927909,
+    ]
+    .iter()
+    {
         // bench it from 32 bit to 64 bit, stepping by 8
         group.bench_with_input(BenchmarkId::from_parameter(prime), &prime, |b, &prime| {
             b.iter(|| square(51, *prime));
@@ -24,7 +33,14 @@ pub fn bench_square_fit(c: &mut Criterion) {
 pub fn bench_square_overflow(c: &mut Criterion) {
     let mut group = c.benchmark_group("square_overflow");
 
-    for prime in [65521, 4294967197, 281474976710597].iter() {
+    for prime in [
+        4294967197,
+        1099511627689,
+        281474976710597,
+        72057594037927909,
+    ]
+    .iter()
+    {
         // bench it from 32 bit to 64 bit, stepping by 8
         group.bench_with_input(BenchmarkId::from_parameter(prime), &prime, |b, &prime| {
             b.iter(|| square(*prime - 51, *prime));
@@ -37,7 +53,14 @@ pub fn bench_square_overflow(c: &mut Criterion) {
 pub fn bench_square_root(c: &mut Criterion) {
     let mut group = c.benchmark_group("square_root");
 
-    for prime in [65521, 4294967197, 281474976710597].iter() {
+    for prime in [
+        4294967197,
+        1099511627689,
+        281474976710597,
+        72057594037927909,
+    ]
+    .iter()
+    {
         // bench it from 32 bit to 64 bit, stepping by 8
         group.bench_with_input(BenchmarkId::from_parameter(prime), &prime, |b, &prime| {
             b.iter(|| square_root(2601, *prime)); // 2601 is the square of 51 and p-51

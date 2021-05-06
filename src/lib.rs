@@ -75,8 +75,8 @@ pub fn square_root(a: u128, p: u128) -> (u128, u128) {
     } else {
         let mut s = p - 1;
         let mut e = 0;
-        // we already have computed the e in find_largest_prime
-        // if we supply that in here, the below while loop would be unnecessary
+        // if we were to supply exponent instead of prime, the below while loop would be unnecessary
+        // since we already computed the value of "e" as the exponent in find_largest_prime
         while (s % 2) == 0 {
             s /= 2;
             e += 1;

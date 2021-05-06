@@ -15,7 +15,7 @@ given a number, compute it's square, in given modulo
 
 ---------
 
-### How to RUN
+## How to RUN
 
 1. Download the repo
 2. move to this repo's root directory in your favourite terminal
@@ -27,7 +27,7 @@ P.S. you have to have *rust* and *cargo* installed in your system
 
 ------- 
 
-### How to see the Documentation
+## How to see the Documentation
 
 1. Download the repo
 2. move to this repo's root directory in your favourite terminal
@@ -37,7 +37,7 @@ P.S. you have to have *rust* and *cargo* installed in your system
 
 ------- 
 
-### How to do the Testing (both Unit and Integration tests)
+## How to do the Testing (both Unit and Integration tests)
 
 1. Download the repo
 2. move to this repo's root directory in your favourite terminal
@@ -47,7 +47,7 @@ P.S. you have to have *rust* and *cargo* installed in your system
 
 ------- 
 
-### How to do the Benchmark Tests
+## How to do the Benchmark Tests
 
 1. Download the repo
 2. move to this repo's root directory in your favourite terminal
